@@ -1,0 +1,68 @@
+From b8caae583da131884bc9d2ce1314769dc1408b39 Mon Sep 17 00:00:00 2001
+From: Michael <nakaner@gmx.net>
+Date: Sat, 1 Feb 2020 23:13:40 +0100
+Subject: [PATCH] Add optional links to legal notice, privacy policy and
+ general info page
+
+---
+ example_project/settings.py                 | 14 ++++++++++++++
+ src/postorius/templates/postorius/base.html |  4 ++++
+ 2 files changed, 18 insertions(+)
+
+diff --git a/example_project/settings.py b/example_project/settings.py
+index e0ea80b..c6909b3 100644
+--- a/example_project/settings.py
++++ b/example_project/settings.py
+@@ -118,6 +118,9 @@ TEMPLATES = [
+                 'django_mailman3.context_processors.common',
+                 'postorius.context_processors.postorius',
+             ],
++            'libraries': {
++                'footer_link': 'django_mailman3.templatetags.footer_link',
++            }
+         },
+     },
+ ]
+@@ -287,6 +290,17 @@ LOGGING = {
+ 
+ POSTORIUS_TEMPLATE_BASE_URL = "http://localhost:8000"
+ 
++# Additional links to be place in the footer of every page
++FOOTER_LINKS = [
++    {
++        'url': '/privacy.html',
++        'text': 'Privacy Policy',
++        'translations': {
++            'de-de': 'Datenschutzerklärung'
++         },
++    }
++]
++
+ 
+ try:
+     from settings_local import *
+diff --git a/src/postorius/templates/postorius/base.html b/src/postorius/templates/postorius/base.html
+index 5e4111d..3e6792d 100644
+--- a/src/postorius/templates/postorius/base.html
++++ b/src/postorius/templates/postorius/base.html
+@@ -1,6 +1,7 @@
+ {% load i18n %}
+ {% load staticfiles %}
+ {% load gravatar %}
++{% load footer_link %}
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+@@ -119,6 +120,9 @@
+                 <a href="http://list.org">GNU Mailman</a>
+                 &bull;
+                 {% trans 'Postorius Version' %} {{ POSTORIUS_VERSION }}
++                {% for fl in FOOTER_LINKS %}
++                &bull; {% footer_link fl %}
++                {% endfor %}
+             </p>
+         </div>
+     </footer>
+-- 
+2.7.4
+

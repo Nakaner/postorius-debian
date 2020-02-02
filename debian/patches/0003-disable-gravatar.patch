@@ -1,0 +1,48 @@
+From 77e7cea4889c73ab05f0763f4aebb051c953d7bb Mon Sep 17 00:00:00 2001
+From: Michael <osm-ml@michreichert.de>
+Date: Sun, 2 Feb 2020 16:52:03 +0100
+Subject: [PATCH] Replace templatetag gravatar by gravatar_wrapper
+
+This makes use of the now optional Gravatar support in django-mailman3.
+---
+ example_project/settings.py                 | 2 ++
+ src/postorius/templates/postorius/base.html | 3 ++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/example_project/settings.py b/example_project/settings.py
+index c6909b3..0c58286 100644
+--- a/example_project/settings.py
++++ b/example_project/settings.py
+@@ -290,6 +290,8 @@ LOGGING = {
+ 
+ POSTORIUS_TEMPLATE_BASE_URL = "http://localhost:8000"
+ 
++# Disable Gravatar and use generic replacement avatar instead.
++GRAVATAR_DISABLED = False
+ # Additional links to be place in the footer of every page
+ FOOTER_LINKS = [
+     {
+diff --git a/src/postorius/templates/postorius/base.html b/src/postorius/templates/postorius/base.html
+index 3e6792d..9900d01 100644
+--- a/src/postorius/templates/postorius/base.html
++++ b/src/postorius/templates/postorius/base.html
+@@ -1,6 +1,7 @@
+ {% load i18n %}
+ {% load staticfiles %}
+ {% load gravatar %}
++{% load gravatar_wrapper %}
+ {% load footer_link %}
+ <!DOCTYPE html>
+ <html lang="en">
+@@ -64,7 +65,7 @@
+                         <li class="dropdown">
+                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                                role="button" aria-haspopup="true" aria-expanded="false">
+-                                {% gravatar user.email 20 %}
++                                {% gravatar_wrapper user.email 20 %}
+                                 {{ user.username|truncatechars:"35" }}
+                                 <span class="caret"></span>
+                             </a>
+-- 
+2.7.4
+

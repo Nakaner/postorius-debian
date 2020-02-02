@@ -1,3 +1,15 @@
+postorius (1.2.4-2) unstable; urgency=medium
+
+  * d/p/0002-footer-links.patch
+    - Add support for additional links in the footer (can be configured by
+      system administrator).
+  * d/p/0003-disable-gravatar.patch
+    - Make use of the now optional support of Gravatar in django-mailman3.
+      If the Django setting GRAVATAR_DISABLED=True is set, no personal data
+      will be leaked to Gravatar.
+
+ -- Michael Reichert <osm-ml@michreichert.de>  Sun, 02 Feb 2020 19:45:05 +0100
+
 postorius (1.2.4-1) unstable; urgency=medium
 
   * New upstream release 1.2.4
